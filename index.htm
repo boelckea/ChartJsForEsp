@@ -17,134 +17,134 @@
 </head>
 
 <body>
-<div style="width: 100%;">
-    <canvas id="canvas"></canvas>
-</div>
-<br>
-<br>
-<button id="zoomIn">Zoom in</button>
-<script>
-    var color = Chart.helpers.color;
-    var config = {
-        type: 'line',
-        data: {
-            datasets: []
-        },
-        options: {
-            responsive: true,
-            title: {
-                display: true,
-                text: "Test Chart"
+    <div style="width: 100%;">
+        <canvas id="canvas"></canvas>
+    </div>
+    <br>
+    <br>
+    <button id="zoomIn">Zoom in</button>
+    <script>
+        var color = Chart.helpers.color;
+        var config = {
+            type: 'line',
+            data: {
+                datasets: []
             },
-            scales: {
-                xAxes: [
-                    {
-                        type: "time",
-                        display: true,
-                        scaleLabel: {
+            options: {
+                responsive: true,
+                title: {
+                    display: true,
+                    text: "Test Chart"
+                },
+                scales: {
+                    xAxes: [
+                        {
+                            type: "time",
                             display: true,
-                            labelString: 'Date'
-                        },
-                        ticks: {
-                            callback: function(value, index, values) {
-                                var dateval = values[index];
-                                if (dateval !== undefined) {
-                                    return new Date(values[index].value).toLocaleDateString('de-DE', { day: 'numeric', month: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric' });
-                                } else {
-                                    return "";
-                                }
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Date'
                             },
-                            autoSkip: true,
-                            maxTicksLimit: 50
-                        }
-                    }
-                ],
-                yAxes: [
-                    {
-                        display: true,
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'value'
-                        }
-                    }
-                ]
-            }
-        }
-    };
-
-    window.onload = function() {
-        var colors = [window.chartColors.green, window.chartColors.blue, window.chartColors.red, window.chartColors.green, window.chartColors.grey, window.chartColors.pink];
-
-        var ctx = document.getElementById("canvas").getContext("2d");
-            window.firstchart = new window.Chart(ctx, config);
-
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function () {
-            if (xmlhttp.readyState === XMLHttpRequest.DONE) { // XMLHttpRequest.DONE == 4
-                if (xmlhttp.status === 200) {
-                    // parse csv data to datasets
-                    var dataSplit = xmlhttp.responseText.split("\r\n");
-                    var datasets = [];
-                    dataSplit.forEach(function(item, index) {
-                        if (index === 0) {
-                            // create blank datasets
-                            var headerSplit = item.split(";");
-                            headerSplit.forEach(function(headeritem, headerindex) {
-                                if (headerindex !== 0) {
-                                    var dataset = {
-                                        label: headeritem,
-                                        lineTension: 0,
-                                        backgroundColor: color(colors[headerindex]).alpha(0.5).rgbString(),
-                                        borderColor: colors[headerindex],
-                                        fill: false,
-                                        data: []
+                            ticks: {
+                                callback: function (value, index, values) {
+                                    var dateval = values[index];
+                                    if (dateval !== undefined) {
+                                        return new Date(values[index].value).toLocaleDateString('de-DE', { day: 'numeric', month: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric' });
+                                    } else {
+                                        return "";
                                     }
-                                    datasets.push(dataset);
-                                }
-                            });
-                            return;
-                        }
-                        var lineSplit = item.split(";");
-                        lineSplit.forEach(function(lineitem, lineindex) {
-                            if (lineindex === 0) {
-                                return;
+                                },
+                                autoSkip: true,
+                                maxTicksLimit: 50
                             }
-                            datasets[lineindex - 1].data.push(JSON.parse('{"x": ' + lineSplit[0] + ', "y": ' + lineitem + '}'));
-                        });
-                    });
-                    window.firstchart.config.data.datasets = datasets;
-                } else if (xmlhttp.status === 400) {
-                    alert('There was an error 400');
-                } else {
-                    alert('something else other than 200 was returned');
+                        }
+                    ],
+                    yAxes: [
+                        {
+                            display: true,
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'value'
+                            }
+                        }
+                    ]
                 }
             }
         };
 
-        xmlhttp.open("GET", "data.txt", true);
-        xmlhttp.send();
-
-        //chart.config.data.datasets[1].data.push(JSON.parse('{"x": "2018-01-26T20:58:12+01:00", "y": 24}'))
-        //chart.config.data.datasets[1].data.push({ x: "2018-02-26T20:58:12+01:00", y: 22 })
-        //chart.config.data.datasets[1].data.push({ x: "2018-03-01T20:58:12+01:00", y: 33 })
-        //chart.config.data.datasets[0].data = JSON.parse('[{ "x": "2018-01-25T20:58:12+01:00", "y": 20 }, { "x": "2018-01-26T20:58:12+01:00", "y": 10 }, { "x": "2018-01-28T20:58:12+01:00", "y": 5 }]');
-        //chart.config.data.datasets[1].data = JSON.parse('[{ "x": "2018-01-25T20:58:12+01:00", "y": 10 }, { "x": "2018-01-26T20:58:12+01:00", "y": 20 }, { "x": "2018-01-28T20:58:12+01:00", "y": 15 }]');
-        //chart.config.type = "bar";
-        //chart.config.data.datasets[1].type = "bar";
-        //chart.update();
-    };
-
-    document.getElementById('zoomIn').addEventListener('click',
-        function() {
-            window.firstchart.data.labels[5] = "Newly Added";
-            return;
-            var type = document.getElementById('type').value;
-            chart.config.data.datasets[0].type = type;
-            chart.update();
-        });
+        window.onload = function () {
+            var colors = [window.chartColors.green, window.chartColors.blue, window.chartColors.red, window.chartColors.green, window.chartColors.grey, window.chartColors.pink];
 
 
-</script>
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState === XMLHttpRequest.DONE) { // XMLHttpRequest.DONE == 4
+                    if (xmlhttp.status === 200) {
+                        // parse csv data to datasets
+                        var dataSplit = xmlhttp.responseText.split("\r\n");
+                        var datasets = [];
+                        dataSplit.forEach(function (item, index) {
+                            if (index === 0) {
+                                // create blank datasets
+                                var headerSplit = item.split(";");
+                                headerSplit.forEach(function (headeritem, headerindex) {
+                                    if (headerindex !== 0) {
+                                        var dataset = {
+                                            label: headeritem,
+                                            lineTension: 0,
+                                            backgroundColor: color(colors[headerindex]).alpha(0.5).rgbString(),
+                                            borderColor: colors[headerindex],
+                                            fill: false,
+                                            data: []
+                                        }
+                                        datasets.push(dataset);
+                                    }
+                                });
+                                return;
+                            }
+                            var lineSplit = item.split(";");
+                            lineSplit.forEach(function (lineitem, lineindex) {
+                                if (lineindex === 0) {
+                                    return;
+                                }
+                                datasets[lineindex - 1].data.push(JSON.parse('{"x": ' + lineSplit[0] + ', "y": ' + lineitem + '}'));
+                            });
+                        });
+                        config.data.datasets = datasets;
+                        var ctx = document.getElementById("canvas").getContext("2d");
+                        window.firstchart = new window.Chart(ctx, config);
+                    } else if (xmlhttp.status === 400) {
+                        alert('There was an error 400');
+                    } else {
+                        alert('something else other than 200 was returned');
+                    }
+                }
+            };
+
+            xmlhttp.open("GET", "data.txt", true);
+            xmlhttp.send();
+
+            //chart.config.data.datasets[1].data.push(JSON.parse('{"x": "2018-01-26T20:58:12+01:00", "y": 24}'))
+            //chart.config.data.datasets[1].data.push({ x: "2018-02-26T20:58:12+01:00", y: 22 })
+            //chart.config.data.datasets[1].data.push({ x: "2018-03-01T20:58:12+01:00", y: 33 })
+            //chart.config.data.datasets[0].data = JSON.parse('[{ "x": "2018-01-25T20:58:12+01:00", "y": 20 }, { "x": "2018-01-26T20:58:12+01:00", "y": 10 }, { "x": "2018-01-28T20:58:12+01:00", "y": 5 }]');
+            //chart.config.data.datasets[1].data = JSON.parse('[{ "x": "2018-01-25T20:58:12+01:00", "y": 10 }, { "x": "2018-01-26T20:58:12+01:00", "y": 20 }, { "x": "2018-01-28T20:58:12+01:00", "y": 15 }]');
+            //chart.config.type = "bar";
+            //chart.config.data.datasets[1].type = "bar";
+            //chart.update();
+        };
+
+        document.getElementById('zoomIn').addEventListener('click',
+            function () {
+                window.firstchart.data.labels[5] = "Newly Added";
+                return;
+                var type = document.getElementById('type').value;
+                chart.config.data.datasets[0].type = type;
+                chart.update();
+            });
+
+
+    </script>
 </body>
 
 </html>

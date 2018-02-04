@@ -4,7 +4,7 @@
 <head>
     <title>Time Scale Point Data</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
-    <script src="Chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
     <script src="utils.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <style>
@@ -128,6 +128,7 @@
                 display: true,
                 text: "Test Chart"
             },
+			elements: { point: { radius: 0, hitRadius: 10, hoverRadius: 10 } },
             scales: {
                 xAxes: [
                     {

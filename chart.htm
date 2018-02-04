@@ -166,7 +166,7 @@
     };
 
     window.onload = function() {
-        var colors = [window.chartColors.green, window.chartColors.blue, window.chartColors.red, window.chartColors.green, window.chartColors.grey, window.chartColors.pink];
+        var colors = [window.chartColors.green, window.chartColors.red, window.chartColors.blue, window.chartColors.green, window.chartColors.grey, window.chartColors.pink];
 
 
         var xmlhttp = new XMLHttpRequest();
@@ -174,7 +174,7 @@
             if (xmlhttp.readyState === XMLHttpRequest.DONE) { // XMLHttpRequest.DONE == 4
                 if (xmlhttp.status === 200) {
                     // parse csv data to datasets
-                    var dataSplit = xmlhttp.responseText.split("\r\n");
+                    var dataSplit = xmlhttp.responseText.split("\n");
                     var datasets = [];
                     dataSplit.forEach(function(item, index) {
                         if (index === 0) {

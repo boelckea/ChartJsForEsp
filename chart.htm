@@ -23,6 +23,7 @@
 <br>
 <br>
 <button id="zoomIn">Zoom in</button>
+<button id="zoomOut">Zoom out</button>
 <script>
     var color = Chart.helpers.color;
     var config = {
@@ -126,31 +127,38 @@
             }
         };
 
-        xmlhttp.open("GET", "data.txt?from=" + getFrom() + "&to=" + getTo(), true);
+        xmlhttp.open("GET", "data.txt?mode=" + getMode() + "&number=" + getNumber(), true);
         xmlhttp.send();
     };
 
     document.getElementById('zoomIn').addEventListener('click',
-        function() {
-            window.location = "chart.htm?from=" + getFrom() + "&to=" + getTo();
+        function () {
+            var newLocation = "chart.htm?mode=" + getMode() + "&number=" + getNumber() / 10;
+            window.location = newLocation;
         });
 
-    function getFrom() {
+    document.getElementById('zoomOut').addEventListener('click',
+        function () {
+            var newLocation = "chart.htm?mode=" + getMode() + "&number=" + getNumber() * 10;
+            window.location = newLocation;
+        });
+
+    function getMode() {
         var url = new URL(window.location);
-        var from = url.searchParams.get("from");
-        if (from === undefined) {
-            from = "-3600";
+        var mode = url.searchParams.get("mode");
+        if (mode === null) {
+            mode = "last";
         }
-        return from;
+        return mode;
     }
 
-    function getTo() {
+    function getNumber() {
         var url = new URL(window.location);
-        var to = url.searchParams.get("to");
-        if (to === undefined) {
-            to = "-0";
+        var number = url.searchParams.get("number");
+        if (number === null) {
+            number = "3600";
         }
-        return to;
+        return number;
     }
 </script>
 </body>

@@ -22,6 +22,7 @@
 </div>
 <br>
 <br>
+<button id="panLeft">Pan left</button>
 <button id="zoomIn">Zoom in</button>
 <button id="zoomOut">Zoom out</button>
 <script>
@@ -127,19 +128,30 @@
             }
         };
 
-        xmlhttp.open("GET", "data.txt?mode=" + getMode() + "&number=" + getNumber(), true);
+        xmlhttp.open("GET", "data.txt?mode=" + getMode() + "&count=" + getCount(), true);
         xmlhttp.send();
     };
 
     document.getElementById('zoomIn').addEventListener('click',
         function () {
-            var newLocation = "chart.htm?mode=" + getMode() + "&number=" + getNumber() / 10;
+            var newLocation = "chart.htm?mode=" + getMode() + "&count=" + getCount() / 2;
             window.location = newLocation;
         });
 
     document.getElementById('zoomOut').addEventListener('click',
         function () {
-            var newLocation = "chart.htm?mode=" + getMode() + "&number=" + getNumber() * 10;
+            var newLocation = "chart.htm?mode=" + getMode() + "&count=" + getCount() * 2;
+            window.location = newLocation;
+        });
+		
+	document.getElementById('panLeft').addEventListener('click',
+        function () {
+			var mode = getMode();
+			if(mode === "end"){
+				var newLocation = "chart.htm?mode=end&skip=" + getCount() + "&count=" + getCount();
+				window.location = newLocation;
+			}
+            var newLocation = "chart.htm?mode=" + getMode() + "&count=" + getCount() * 2;
             window.location = newLocation;
         });
 
@@ -147,18 +159,18 @@
         var url = new URL(window.location);
         var mode = url.searchParams.get("mode");
         if (mode === null) {
-            mode = "last";
+            mode = "end";
         }
         return mode;
     }
 
-    function getNumber() {
+    function getCount() {
         var url = new URL(window.location);
-        var number = url.searchParams.get("number");
-        if (number === null) {
-            number = "3600";
+        var count = url.searchParams.get("count");
+        if (count === null) {
+            count = "60";
         }
-        return number;
+        return count;
     }
 </script>
 </body>

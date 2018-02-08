@@ -17,14 +17,15 @@
 </head>
 
 <body>
+<button id="toStart">&lt;&lt;</button>
+<button id="panLeft">&lt;</button>
+<button id="zoomIn">+</button>
+<button id="zoomOut">-</button>
+<button id="panRight">&gt;</button>
+<button id="toEnd">&gt;&gt;</button>
 <div style="width: 100%;">
     <canvas id="canvas"></canvas>
 </div>
-<br>
-<br>
-<button id="panLeft">Pan left</button>
-<button id="zoomIn">Zoom in</button>
-<button id="zoomOut">Zoom out</button>
 <script>
     var color = Chart.helpers.color;
     var config = {
@@ -128,32 +129,46 @@
             }
         };
 
-        xmlhttp.open("GET", "data.txt?mode=" + getMode() + "&count=" + getCount(), true);
+        xmlhttp.open("GET", "data.txt?mode=" + getMode() + "&count=" + getCount() + "&offset=" + getOffset(), true);
         xmlhttp.send();
     };
 
+    document.getElementById('toStart').addEventListener('click',
+        function() {
+            var newLocation = "chart.htm?mode=start" + "&count=" + getCount();
+            window.location = newLocation;
+        });
+
+    document.getElementById('panLeft').addEventListener('click',
+        function() {
+            var newLocation = "chart.htm?mode=" + getMode() + "&count=" + getCount() + "&offset=" + Math.max(getOffset() * 1 + (getMode() === "end" ? +getCount() : -getCount()), 0);
+            window.location = newLocation;
+        });
+
     document.getElementById('zoomIn').addEventListener('click',
-        function () {
-            var newLocation = "chart.htm?mode=" + getMode() + "&count=" + getCount() / 2;
+        function() {
+            var newLocation = "chart.htm?mode=" + getMode() + "&count=" + getCount() / 2 + "&offset=" + getOffset();
             window.location = newLocation;
         });
 
     document.getElementById('zoomOut').addEventListener('click',
-        function () {
-            var newLocation = "chart.htm?mode=" + getMode() + "&count=" + getCount() * 2;
+        function() {
+            var newLocation = "chart.htm?mode=" + getMode() + "&count=" + getCount() * 2 + "&offset=" + getOffset();
             window.location = newLocation;
         });
-		
-	document.getElementById('panLeft').addEventListener('click',
-        function () {
-			var mode = getMode();
-			if(mode === "end"){
-				var newLocation = "chart.htm?mode=end&skip=" + getCount() + "&count=" + getCount();
-				window.location = newLocation;
-			}
-            var newLocation = "chart.htm?mode=" + getMode() + "&count=" + getCount() * 2;
+
+    document.getElementById('panRight').addEventListener('click',
+        function() {
+            var newLocation = "chart.htm?mode=" + getMode() + "&count=" + getCount() + "&offset=" + Math.max(getOffset() * 1 + (getMode() === "start" ? +getCount() : -getCount()), 0);
             window.location = newLocation;
         });
+
+    document.getElementById('toEnd').addEventListener('click',
+        function() {
+            var newLocation = "chart.htm?mode=end" + "&count=" + getCount();
+            window.location = newLocation;
+        });
+
 
     function getMode() {
         var url = new URL(window.location);
@@ -171,6 +186,15 @@
             count = "60";
         }
         return count;
+    }
+
+    function getOffset() {
+        var url = new URL(window.location);
+        var offset = url.searchParams.get("offset");
+        if (offset === null) {
+            offset = "0";
+        }
+        return offset;
     }
 </script>
 </body>

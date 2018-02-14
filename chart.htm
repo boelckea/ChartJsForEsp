@@ -2,10 +2,9 @@
 <html>
 
 <head>
-    <title>Time Scale Point Data</title>
+    <title>ESP Feuchtigkeiten</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
-    <script src="utils.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <style>
         canvas {
@@ -27,7 +26,6 @@
     <canvas id="canvas"></canvas>
 </div>
 <script>
-    var color = Chart.helpers.color;
     var config = {
         type: 'line',
         data: {
@@ -37,11 +35,11 @@
             responsive: true,
             title: {
                 display: true,
-                text: "Test Chart"
+                text: "ESP Feuchtigkeiten"
             },
             elements: {
                 point: { radius: 0, hitRadius: 10, hoverRadius: 10 },
-                line: { borderWidth: 1 }
+                line: { borderWidth: 2 }
             },
             scales: {
                 xAxes: [
@@ -81,8 +79,7 @@
     };
 
     window.onload = function() {
-        var colors = [window.chartColors.green, window.chartColors.red, window.chartColors.blue, window.chartColors.green, window.chartColors.grey, window.chartColors.pink];
-
+        var colors = ["#fb0732","#0723fb","#07fb10","#f588e2","#88c2f5","#88f5be","#848484","#ffee07"];
 
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
@@ -100,8 +97,8 @@
                                     var dataset = {
                                         label: headeritem,
                                         lineTension: 0,
-                                        backgroundColor: color(colors[headerindex]).alpha(0.5).rgbString(),
-                                        borderColor: colors[headerindex],
+                                        backgroundColor: Chart.helpers.color(colors[headerindex - 1]).alpha(0.5).rgbString(),
+                                        borderColor: colors[headerindex - 1],
                                         fill: false,
                                         data: []
                                     }

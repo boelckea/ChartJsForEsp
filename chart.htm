@@ -80,7 +80,7 @@
 
     window.onload = function() {
         var colors = ["#fb0732","#0723fb","#07fb10","#f588e2","#88c2f5","#88f5be","#848484","#ffee07"];
-		var numberTest = RegExp("[0-9.]{4}")
+		var numberTest = RegExp("[0-9.-]{1,4}")
 		
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
